@@ -1,19 +1,19 @@
-import { useContext } from 'react';
-import styled from 'styled-components';
-import { MetamaskActions, MetaMaskContext } from '../hooks';
+import { useContext } from "react";
+import styled from "styled-components";
+import { MetamaskActions, MetaMaskContext } from "../hooks";
 import {
   connectSnap,
   getSnap,
-  getGas,
+  getCheck,
   shouldDisplayReconnectButton,
-} from '../utils';
+} from "../utils";
 import {
   ConnectButton,
-  GetGasButton,
+  GetCheckButton,
   InstallFlaskButton,
   ReconnectButton,
-} from './Buttons';
-import { Card } from './Card';
+} from "./Buttons";
+import { Card } from "./Card";
 
 const Container = styled.div`
   display: flex;
@@ -117,9 +117,9 @@ export const Home = () => {
     }
   };
 
-  const handleGetGasClick = async () => {
+  const handlegetCheckClick = async () => {
     try {
-      await getGas();
+      await getCheck();
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
@@ -143,9 +143,9 @@ export const Home = () => {
         {!state.isFlask && (
           <Card
             content={{
-              title: 'Install',
+              title: "Install",
               description:
-                'Snaps is pre-release software only available in MetaMask Flask, a canary distribution for developers with access to upcoming features.',
+                "Snaps is pre-release software only available in MetaMask Flask, a canary distribution for developers with access to upcoming features.",
               button: <InstallFlaskButton />,
             }}
             fullWidth
@@ -154,9 +154,9 @@ export const Home = () => {
         {!state.installedSnap && (
           <Card
             content={{
-              title: 'Connect',
+              title: "Connect",
               description:
-                'Get started by connecting to and installing the example snap.',
+                "Get started by connecting to and installing the example snap.",
               button: (
                 <ConnectButton
                   onClick={handleConnectClick}
@@ -170,9 +170,9 @@ export const Home = () => {
         {shouldDisplayReconnectButton(state.installedSnap) && (
           <Card
             content={{
-              title: 'Reconnect',
+              title: "Reconnect",
               description:
-                'While connected to a local running snap this button will always be displayed in order to update the snap if a change is made.',
+                "While connected to a local running snap this button will always be displayed in order to update the snap if a change is made.",
               button: (
                 <ReconnectButton
                   onClick={handleConnectClick}
@@ -185,12 +185,12 @@ export const Home = () => {
         )}
         <Card
           content={{
-            title: 'Show Gas Fees',
+            title: "Show Gas Fees",
             description:
-              'Display a custom message with current gas fees in MetaMask.',
+              "Display a custom message with current gas fees in MetaMask.",
             button: (
-              <GetGasButton
-                onClick={handleGetGasClick}
+              <GetCheckButton
+                onClick={handlegetCheckClick}
                 disabled={!state.isFlask}
               />
             ),
@@ -200,7 +200,7 @@ export const Home = () => {
         />
         <Notice>
           <p>
-            Please note that the <b>snap.manifest.json</b> and{' '}
+            Please note that the <b>snap.manifest.json</b> and{" "}
             <b>package.json</b> must be located in the server root directory and
             the bundle must be hosted at the location specified by the location
             field.

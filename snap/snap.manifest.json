@@ -7,7 +7,7 @@
     "url": "https://github.com/Montoya/gas-fee-snap.git"
   },
   "source": {
-    "shasum": "PGfhF4ddZmgRDIhQ8IVxP6JuDX++JUz43KsOe1lbxi0=",
+    "shasum": "wZMfouh1ZciCuX36xhkl/wycn4Vy0zdxmYp8fsLj21Y=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -19,6 +19,7 @@
   },
   "initialPermissions": {
     "snap_confirm": {},
+    "snap_notify": {},
     "endowment:network-access": {},
     "endowment:transaction-insight": {}
   },
