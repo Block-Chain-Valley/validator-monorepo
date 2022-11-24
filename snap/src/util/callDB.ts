@@ -1,13 +1,14 @@
 interface RT {
     reportNum: string;
+    safeNum: string;
     reportType: string;
 }
 
 export const callDB = async (address: string, chainID: string): Promise<RT> => {
     /* DB 신고 데이터 호출 */
     const path = "test";
-    const response = await fetch(path);
-    const result = await response.json();
+    // const response = await fetch(path);
+    // const result = await response.json();
 
     // result 처리해서 reportNum, reportType에 대입
     const reportNum = "test";
@@ -15,6 +16,7 @@ export const callDB = async (address: string, chainID: string): Promise<RT> => {
 
     return {
         reportNum,
+        safeNum,
         reportType,
     };
 };
