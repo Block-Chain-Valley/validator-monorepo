@@ -1,6 +1,7 @@
 import { OnRpcRequestHandler, OnTransactionHandler } from "@metamask/snap-types";
 import { callChainSight } from "./util/callChainSight";
 import { callDB } from "./util/callDB";
+import { callAlchemy } from "./util/callAlchemy";
 
 type InsightsType = {
     [key: string]: {
@@ -16,7 +17,7 @@ const notifyToWallet = async () => {
             {
                 prompt: "Hello, User!",
                 description: "Validator를 설치해 주셔서 감사합니다.",
-                textAreaContent: "Validator는 Snap을 기반으로 한, 컨트랙트 피싱 방지 서비스입니다. \nVersion 11",
+                textAreaContent: "Validator는 Snap을 기반으로 한, 컨트랙트 피싱 방지 서비스입니다. \nVersion test1.0",
             },
         ],
     });
@@ -36,7 +37,7 @@ export const onTransaction: OnTransactionHandler = async ({ transaction, chainId
     // TODO: URL 처리 로직 작성
     const address = transaction.to as string;
 
-    if (chainId === "eip155:1" || chainId === "eip155:137" || chainId === "eip155:43114") {
+    if (chainId !== "eip155:1" && chainId !== "eip155:137" && chainId !== "eip155:43114") {
         return {
             insights: {
                 "Unsupported chain": "Sorry, Validator only supports Ethereum, Polygon, Avalanche mainnet. 😢",
@@ -44,42 +45,17 @@ export const onTransaction: OnTransactionHandler = async ({ transaction, chainId
         };
     }
 
-    const chainSightResult = await callChainSight(address, chainId);
     const dbResult = await callDB(address, chainId);
+    const chainSightResult = await callChainSight(address, chainId);
+    const alchemyResult = await callAlchemy(address, chainId);
 
-    if (chainSightResult.isData === true && chainSightResult.creditScore === "1") {
-        return {
-            insights: {
-                "Number of report": `${dbResult.reportNum} report`,
-                "Number of safe": `${dbResult.safeNum} safe`,
-                "Credit check": "Safe ✅",
-            },
-        };
-    } else if (chainSightResult.isData === true && chainSightResult.creditScore === "2") {
-        return {
-            insights: {
-                "Number of report": `${dbResult.reportNum} report`,
-                "Number of safe": `${dbResult.safeNum} safe`,
-                "Credit check": "Cautious 🚧",
-            },
-        };
-    } else if (chainSightResult.isData === true && chainSightResult.creditScore === "3") {
-        return {
-            insights: {
-                "Number of report": `${dbResult.reportNum} report`,
-                "Number of safe": `${dbResult.safeNum} safe`,
-                "Credit check": "Danger ❌",
-            },
-        };
-    } else {
-        return {
-            insights: {
-                "Number of report": `${dbResult.reportNum} report`,
-                "Number of safe": `${dbResult.safeNum} safe`,
-                "Credit check": "Sorry, the data is not available.",
-            },
-        };
-    }
+    return {
+        insights: {
+            "Report Data in validator": `${dbResult.reportCount} report count, ${dbResult.safeCount} safe count detected.`,
+            "Credit check by ChainSight": `${chainSightResult.insightString}`,
+            "Scam address check by Alchemy": `${chainSightResult.insightString}`,
+        },
+    };
 };
 
 // "data: ",
