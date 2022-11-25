@@ -1,8 +1,7 @@
 const { CHAINSIGHT_API_KEY1, CHAINSIGHT_API_KEY2, CHAINSIGHT_API_KEY3 } = require("../../env/key.json");
 
 interface RT {
-    isData: boolean;
-    creditScore: string;
+    insightString;
 }
 
 // ETH: 2, POLYGON: 7, AVALANCHE: 10
@@ -22,7 +21,7 @@ export const callChainSight = async (address: string, chainID: string): Promise<
 
     const response = await fetch(path, {
         headers: {
-            "x-api-key": CHAINSIGHT_API_KEY3,
+            "x-api-key": CHAINSIGHT_API_KEY1,
         },
     });
     const result = await response.json();
@@ -40,10 +39,22 @@ export const callChainSight = async (address: string, chainID: string): Promise<
         }
     }
 
-    if (isData === false) creditScore = "999";
+    // Metamask snap UI에 출력되는 값
+    let insightString: string;
+
+    if (isData === false) {
+        insightString = "No data 🙁";
+    } else if (creditScore === "1") {
+        insightString = "Safe ✅";
+    } else if (creditScore === "2") {
+        insightString = "Cautious 🚧";
+    } else if (creditScore === "3") {
+        insightString = "Danger ❌";
+    } else {
+        insightString = "Sorry, there is an error 😢";
+    }
 
     return {
-        isData,
-        creditScore,
+        insightString,
     };
 };

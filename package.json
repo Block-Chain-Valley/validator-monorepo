@@ -25,5 +25,8 @@
     "start:snap": "cd ./snap && yarn start",
     "prettier": "npx prettier --write .",
     "prepare": "husky install"
+  },
+  "dependencies": {
+    "alchemy-sdk": "^2.2.3"
   }
 }
