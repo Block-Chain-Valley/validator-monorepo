@@ -1,5 +1,3 @@
-// Github: https://github.com/alchemyplatform/alchemy-sdk-js
-import { Network, Alchemy } from "alchemy-sdk";
 const { ALCHEMY_API_KEY } = require("../../env/key.json");
 
 interface RT {
@@ -10,24 +8,27 @@ export const callAlchemy = async (address: string, chainId: string) => {
     // Metamask snap UI에 출력되는 값
     let insightString;
 
-    if (chainId === "eip155:1") {
-        // Optional Config object, but defaults to demo api-key and eth-mainnet.
-        const settings = {
-            apiKey: ALCHEMY_API_KEY, // Replace with your Alchemy API Key.
-            network: Network.ETH_MAINNET, // Replace with your network.
-        };
+    try {
+        if (chainId === "eip155:1") {
+            const path = `https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_API_KEY}/isSpamContract?`.concat(
+                `contractAddress=${address}`,
+            );
 
-        const alchemy = new Alchemy(settings);
-        const result = await alchemy.nft.isSpamContract(chainId);
-        console.log(result);
+            const response = await fetch(path);
+            const result = await response.json();
+            console.log(result);
 
-        if (result === true) {
-            insightString = "Scam address ⛔️";
+            if (result === true) {
+                insightString = "Scam address ⛔️";
+            } else {
+                insightString = "Unreported address 😐";
+            }
         } else {
-            insightString = "Unreported address 😐";
+            insightString = "Sorry, Alchemy only supports Ethereum Mainnet. 😢";
         }
-    } else {
-        insightString = "Sorry, Alchemy only supports Ethereum Mainnet. 😢";
+    } catch (error) {
+        console.log(error);
+        insightString = "Sorry, there is an error 😢";
     }
 
     return {
