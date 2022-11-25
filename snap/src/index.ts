@@ -1,5 +1,12 @@
 import { OnRpcRequestHandler, OnTransactionHandler } from "@metamask/snap-types";
 import { callChainSight } from "./util/callChainSight";
+import { callDB } from "./util/callDB";
+
+type InsightsType = {
+    [key: string]: {
+        string: string;
+    };
+};
 
 const notifyToWallet = async () => {
     console.log("open notify");
@@ -28,17 +35,50 @@ export const onRpcRequest: OnRpcRequestHandler = ({ origin, request }) => {
 export const onTransaction: OnTransactionHandler = async ({ transaction, chainId }) => {
     // TODO: URL 처리 로직 작성
     const address = transaction.to as string;
-    console.log("transaction.to: ", address);
-    const result = await callChainSight(address, chainId);
 
-    if (result.isData === false) {
-        return { insights: { "Credit check": "Unsupported chain :(" } };
-    } else if (result.isData === true && result.creditScore === "1") {
-        return { insights: { "Credit check": "Safe ✅" } };
-    } else if (result.creditScore === "2") {
-        return { insights: { "Credit check": "Cautious 🚧" } };
-    } else if (result.creditScore === "3") {
-        return { insights: { "Credit check": "Danger ❌" } };
+    if (chainId === "eip155:1" || chainId === "eip155:137" || chainId === "eip155:43114") {
+        return {
+            insights: {
+                "Unsupported chain": "Sorry, Validator only supports Ethereum, Polygon, Avalanche mainnet. 😢",
+            },
+        };
+    }
+
+    const chainSightResult = await callChainSight(address, chainId);
+    const dbResult = await callDB(address, chainId);
+
+    if (chainSightResult.isData === true && chainSightResult.creditScore === "1") {
+        return {
+            insights: {
+                "Number of report": `${dbResult.reportNum} report`,
+                "Number of safe": `${dbResult.safeNum} safe`,
+                "Credit check": "Safe ✅",
+            },
+        };
+    } else if (chainSightResult.isData === true && chainSightResult.creditScore === "2") {
+        return {
+            insights: {
+                "Number of report": `${dbResult.reportNum} report`,
+                "Number of safe": `${dbResult.safeNum} safe`,
+                "Credit check": "Cautious 🚧",
+            },
+        };
+    } else if (chainSightResult.isData === true && chainSightResult.creditScore === "3") {
+        return {
+            insights: {
+                "Number of report": `${dbResult.reportNum} report`,
+                "Number of safe": `${dbResult.safeNum} safe`,
+                "Credit check": "Danger ❌",
+            },
+        };
+    } else {
+        return {
+            insights: {
+                "Number of report": `${dbResult.reportNum} report`,
+                "Number of safe": `${dbResult.safeNum} safe`,
+                "Credit check": "Sorry, the data is not available.",
+            },
+        };
     }
 };
 
