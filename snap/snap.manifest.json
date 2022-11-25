@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0",
+  "description": "VALIDATOR - WEB3 WHOSCALL",
+  "proposedName": "VALIDATOR",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Montoya/gas-fee-snap.git"
+  },
+  "source": {
+    "shasum": "PGfhF4ddZmgRDIhQ8IVxP6JuDX++JUz43KsOe1lbxi0=",
+    "location": {
+      "npm": {
+        "filePath": "dist/bundle.js",
+        "iconPath": "images/gas.svg",
+        "packageName": "snap",
+        "registry": "https://registry.npmjs.org/"
+      }
+    }
+  },
+  "initialPermissions": {
+    "snap_confirm": {},
+    "endowment:network-access": {},
+    "endowment:transaction-insight": {}
+  },
+  "manifestVersion": "0.1"
+}
