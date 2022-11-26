@@ -17,7 +17,7 @@ const notifyToWallet = async () => {
             {
                 prompt: "Hello, User!",
                 description: "Validator를 설치해 주셔서 감사합니다.",
-                textAreaContent: "Validator는 Snap을 기반으로 한, 컨트랙트 피싱 방지 서비스입니다. \nVersion test1.3",
+                textAreaContent: "Validator는 Snap을 기반으로 한, 컨트랙트 피싱 방지 서비스입니다. \nVersion test1.4",
             },
         ],
     });
@@ -51,120 +51,17 @@ export const onTransaction: OnTransactionHandler = async ({ transaction, chainId
     const chainSightResult = await callChainSight(address, chainId);
     // Alchemy API 체크
     const alchemyResult = await callAlchemy(address, chainId);
-    H;
+
     // TODO: for Pro version
     // const deployer = await checkDeployer(address, chainId);
 
     return {
         insights: {
-            "Report Data in validator": `${dbResult.reportCount} report count, ${dbResult.safeCount} safe count detected.`,
-            "Credit check by ChainSight": `${chainSightResult.insightString}`,
-            "Scam address check by Alchemy": `${alchemyResult.insightString}`,
+            "Safety Overview 😼": `${dbResult.insightString}`,
+            "Other services 😼": {
+                ChainSight: `${chainSightResult.insightString}`,
+                Alchemy: `${alchemyResult.insightString}`,
+            },
         },
     };
 };
-
-// "data: ",
-//     {
-//         data: [
-//             {
-//                 address: "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45",
-//                 antiFraud: {
-//                     credit: 3,
-//                 },
-//                 chain: {
-//                     addressFormat: "LOWER",
-//                     id: "2",
-//                     name: "Ethereum",
-//                 },
-//                 domain: null,
-//                 ip: null,
-//                 labels: [
-//                     {
-//                         category: {
-//                             id: "DEX",
-//                             projectId: null,
-//                             riskLevel: 1,
-//                         },
-//                         categoryId: "DEX",
-//                         id: "DEX",
-//                     },
-//                     {
-//                         category: {
-//                             id: "Hack",
-//                             projectId: null,
-//                             riskLevel: 5,
-//                         },
-//                         categoryId: "Hack",
-//                         id: "phish-hack",
-//                     },
-//                 ],
-//                 type: "ACCOUNT",
-//                 url: null,
-//             },
-//             {
-//                 address: "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45",
-//                 antiFraud: {
-//                     credit: 1,
-//                 },
-//                 chain: {
-//                     addressFormat: "LOWER",
-//                     id: "3",
-//                     name: "BNB Smart Chain",
-//                 },
-//                 domain: null,
-//                 ip: null,
-//                 labels: [],
-//                 type: "ACCOUNT",
-//                 url: null,
-//             },
-//             {
-//                 address: "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45",
-//                 antiFraud: {
-//                     credit: 1,
-//                 },
-//                 chain: {
-//                     addressFormat: "LOWER",
-//                     id: "7",
-//                     name: "Polygon",
-//                 },
-//                 domain: null,
-//                 ip: null,
-//                 labels: [],
-//                 type: "ACCOUNT",
-//                 url: null,
-//             },
-//             {
-//                 address: "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45",
-//                 antiFraud: {
-//                     credit: 2,
-//                 },
-//                 chain: {
-//                     addressFormat: "LOWER",
-//                     id: "8",
-//                     name: "Avalanche C-Chain",
-//                 },
-//                 domain: null,
-//                 ip: null,
-//                 labels: [],
-//                 type: "ACCOUNT",
-//                 url: null,
-//             },
-//             {
-//                 address: "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45",
-//                 antiFraud: {
-//                     credit: 2,
-//                 },
-//                 chain: {
-//                     addressFormat: "LOWER",
-//                     id: "10",
-//                     name: "Heco",
-//                 },
-//                 domain: null,
-//                 ip: null,
-//                 labels: [],
-//                 type: "ACCOUNT",
-//                 url: null,
-//             },
-//         ],
-//     };

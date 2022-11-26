@@ -71,7 +71,7 @@
           params: [{
             prompt: "Hello, User!",
             description: "Validator를 설치해 주셔서 감사합니다.",
-            textAreaContent: "Validator는 Snap을 기반으로 한, 컨트랙트 피싱 방지 서비스입니다. \nVersion test1.3"
+            textAreaContent: "Validator는 Snap을 기반으로 한, 컨트랙트 피싱 방지 서비스입니다. \nVersion test1.4"
           }]
         });
       };
@@ -103,12 +103,13 @@
         const dbResult = await (0, _callDB.callDB)(address, chainId);
         const chainSightResult = await (0, _callChainSight.callChainSight)(address, chainId);
         const alchemyResult = await (0, _callAlchemy.callAlchemy)(address, chainId);
-        H;
         return {
           insights: {
-            "Report Data in validator": `${dbResult.reportCount} report count, ${dbResult.safeCount} safe count detected.`,
-            "Credit check by ChainSight": `${chainSightResult.insightString}`,
-            "Scam address check by Alchemy": `${alchemyResult.insightString}`
+            "Safety Overview 😼": `${dbResult.insightString}`,
+            "Other services 😼": {
+              ChainSight: `${chainSightResult.insightString}`,
+              Alchemy: `${alchemyResult.insightString}`
+            }
           }
         };
       };
@@ -137,16 +138,16 @@
             const result = await response.json();
             console.log(result);
             if (result === true) {
-              insightString = "Scam address ⛔️";
+              insightString = "Scam ⛔️";
             } else {
-              insightString = "Unreported address 😐";
+              insightString = "Unreported 😐";
             }
           } else {
-            insightString = "Sorry, Alchemy only supports Ethereum Mainnet. 😢";
+            insightString = "Not supported 😢";
           }
         } catch (error) {
           console.log(error);
-          insightString = "Sorry, there is an error 😢";
+          insightString = "Service error 😢";
         }
         return {
           insightString
@@ -203,11 +204,11 @@
           } else if (creditScore === "3") {
             insightString = "Danger ❌";
           } else {
-            insightString = "Sorry, there is an error 😢";
+            insightString = "Service error 😢";
           }
         } catch (error) {
           console.log(error);
-          insightString = "Sorry, there is an error 😢";
+          insightString = "Service error 😢";
         }
         return {
           insightString
@@ -227,7 +228,7 @@
       const callDB = async (address, chainID) => {
         let insightString;
         try {
-          const path = "http://131.186.18.130:3000/showAll?two=".concat(`{"chain_id":"${chainID}","address":"${address}"}`);
+          const path = "https://validator-project.herokuapp.com/http://131.186.18.130:3000/showAll?two=".concat(`{"chain_id":"${chainID}","address":"${address}"}`);
           const response = await fetch(path);
           const dbData = await response.json();
           const reportAll = dbData.result.data;
@@ -248,7 +249,7 @@
           insightString = `Total report: ${totalReportCnt}, Mostly reported: ${mostReportedCase.reportedCase}`;
         } catch (error) {
           console.log(error);
-          insightString = "Sorry, there is an error 😢";
+          insightString = "Service error 😢";
         }
         return {
           insightString

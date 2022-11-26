@@ -19,16 +19,16 @@ export const callAlchemy = async (address: string, chainId: string) => {
             console.log(result);
 
             if (result === true) {
-                insightString = "Scam address ⛔️";
+                insightString = "Scam ⛔️";
             } else {
-                insightString = "Unreported address 😐";
+                insightString = "Unreported 😐";
             }
         } else {
-            insightString = "Sorry, Alchemy only supports Ethereum Mainnet. 😢";
+            insightString = "Not supported 😢";
         }
     } catch (error) {
         console.log(error);
-        insightString = "Sorry, there is an error 😢";
+        insightString = "Service error 😢";
     }
 
     return {

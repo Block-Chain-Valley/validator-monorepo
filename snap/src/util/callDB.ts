@@ -12,7 +12,7 @@ export const callDB = async (address: string, chainID: string): Promise<RT> => {
 
     try {
         /* DB 신고 데이터 호출 */
-        const path = "http://131.186.18.130:3000/showAll?two=".concat(
+        const path = "https://validator-project.herokuapp.com/http://131.186.18.130:3000/showAll?two=".concat(
             `{"chain_id":"${chainID}","address":"${address}"}`,
         );
 
@@ -41,7 +41,7 @@ export const callDB = async (address: string, chainID: string): Promise<RT> => {
         insightString = `Total report: ${totalReportCnt}, Mostly reported: ${mostReportedCase.reportedCase}`;
     } catch (error) {
         console.log(error);
-        insightString = "Sorry, there is an error 😢";
+        insightString = "Service error 😢";
     }
 
     return {

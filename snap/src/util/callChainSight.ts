@@ -53,11 +53,11 @@ export const callChainSight = async (address: string, chainID: string): Promise<
         } else if (creditScore === "3") {
             insightString = "Danger ❌";
         } else {
-            insightString = "Sorry, there is an error 😢";
+            insightString = "Service error 😢";
         }
     } catch (error) {
         console.log(error);
-        insightString = "Sorry, there is an error 😢";
+        insightString = "Service error 😢";
     }
 
     return {
