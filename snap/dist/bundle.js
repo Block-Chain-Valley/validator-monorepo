@@ -179,7 +179,7 @@
           const path = "https://validator-project.herokuapp.com/https://api.chainsight.com/api/check?keyword=".concat(address);
           const response = await fetch(path, {
             headers: {
-              "x-api-key": CHAINSIGHT_API_KEY1
+              "x-api-key": CHAINSIGHT_API_KEY2
             }
           });
           const result = await response.json();

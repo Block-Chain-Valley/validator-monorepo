@@ -25,7 +25,7 @@ export const callChainSight = async (address: string, chainID: string): Promise<
 
         const response = await fetch(path, {
             headers: {
-                "x-api-key": CHAINSIGHT_API_KEY1,
+                "x-api-key": CHAINSIGHT_API_KEY2,
             },
         });
         const result = await response.json();
