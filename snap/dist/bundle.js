@@ -96,7 +96,7 @@
         if (chainId !== "eip155:1" && chainId !== "eip155:137" && chainId !== "eip155:43114") {
           return {
             insights: {
-              "Unsupported chain": "Sorry, Validator only supports Ethereum, Polygon, Avalanche mainnet. 😢"
+              "Unsupported chain": "Sorry, Validator only supports Ethereum, Klaytn, Polygon, Avalanche mainnet. 😢"
             }
           };
         }
@@ -106,10 +106,9 @@
         return {
           insights: {
             "Safety Overview 😼": `${dbResult.insightString}`,
-            "Other services 😼": {
-              ChainSight: `${chainSightResult.insightString}`,
-              Alchemy: `${alchemyResult.insightString}`
-            }
+            "Other services 😼": "",
+            ChainSight: `${chainSightResult.insightString}`,
+            Alchemy: `${alchemyResult.insightString}`
           }
         };
       };
