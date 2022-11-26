@@ -7,11 +7,11 @@
     "url": "https://github.com/Montoya/gas-fee-snap.git"
   },
   "source": {
-    "shasum": "C4nUcMkK/UyKX+SEo0EKm69KSowmtsQ5TTu4lfLJ2Lo=",
+    "shasum": "DErCueNzyd5bgoE+k4xKEeo/tktWj6j2TloXW1xoiwo=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
-        "iconPath": "images/gas.svg",
+        "iconPath": "images/validator_logo.svg",
         "packageName": "snap",
         "registry": "https://registry.npmjs.org/"
       }

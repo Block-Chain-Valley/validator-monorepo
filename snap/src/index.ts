@@ -17,7 +17,7 @@ const notifyToWallet = async () => {
             {
                 prompt: "Hello, User!",
                 description: "Validator를 설치해 주셔서 감사합니다.",
-                textAreaContent: "Validator는 Snap을 기반으로 한, 컨트랙트 피싱 방지 서비스입니다. \nVersion test1.2",
+                textAreaContent: "Validator는 Snap을 기반으로 한, 컨트랙트 피싱 방지 서비스입니다. \nVersion test1.3",
             },
         ],
     });
@@ -45,9 +45,15 @@ export const onTransaction: OnTransactionHandler = async ({ transaction, chainId
         };
     }
 
+    // DB 신고 데이터 체크
     const dbResult = await callDB(address, chainId);
+    // ChainSight API 체크
     const chainSightResult = await callChainSight(address, chainId);
+    // Alchemy API 체크
     const alchemyResult = await callAlchemy(address, chainId);
+
+    // TODO: for Pro version
+    // const deployer = await checkDeployer(address, chainId);
 
     return {
         insights: {
