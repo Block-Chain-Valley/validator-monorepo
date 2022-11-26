@@ -50,7 +50,8 @@
         "CHAINSIGHT_API_KEY2": "kM41kcWDKOgahHUP04uBoHCMtkO3XbH6C0I6ioc",
         "CHAINSIGHT_API_KEY3": "ebqCn1ofEaMQYYMuIK5LSZjARPq0P4WWtj3sXph",
         "CHAINSIGHT_API_KET4": "5xM4OD06rLaXecmnaqiVqBAD9tgZvFqceGI",
-        "ALCHEMY_API_KEY": "OhDb1c_7jWaCEDxuvZpewr6cPhm6m7Jd"
+        "ALCHEMY_API_KEY": "OhDb1c_7jWaCEDxuvZpewr6cPhm6m7Jd",
+        "ETHERSCAN_API_KEY": "3VQSRKYDW2U84YF1FEVRIFYH3RDC4B6WMG"
       };
     }, {}],
     2: [function (require, module, exports) {
@@ -102,6 +103,7 @@
         const dbResult = await (0, _callDB.callDB)(address, chainId);
         const chainSightResult = await (0, _callChainSight.callChainSight)(address, chainId);
         const alchemyResult = await (0, _callAlchemy.callAlchemy)(address, chainId);
+        H;
         return {
           insights: {
             "Report Data in validator": `${dbResult.reportCount} report count, ${dbResult.safeCount} safe count detected.`,
@@ -223,12 +225,33 @@
       });
       exports.callDB = void 0;
       const callDB = async (address, chainID) => {
-        const path = "test";
-        const reportCount = "5";
-        const safeCount = "1";
+        let insightString;
+        try {
+          const path = "http://131.186.18.130:3000/showAll?two=".concat(`{"chain_id":"${chainID}","address":"${address}"}`);
+          const response = await fetch(path);
+          const dbData = await response.json();
+          const reportAll = dbData.result.data;
+          console.log(reportAll);
+          let totalReportCnt = 0;
+          let mostReportedCase = {
+            num: 0,
+            reportedCase: "-"
+          };
+          for (let i = 0; i < reportAll.length; i++) {
+            const reportNum = reportAll[i].REPORT_CNT;
+            if (reportNum > mostReportedCase.num) {
+              mostReportedCase.num = reportNum;
+              mostReportedCase.reportedCase = reportAll[i].REASON;
+            }
+            totalReportCnt += reportNum;
+          }
+          insightString = `Total report: ${totalReportCnt}, Mostly reported: ${mostReportedCase.reportedCase}`;
+        } catch (error) {
+          console.log(error);
+          insightString = "Sorry, there is an error 😢";
+        }
         return {
-          reportCount,
-          safeCount
+          insightString
         };
       };
       exports.callDB = callDB;
